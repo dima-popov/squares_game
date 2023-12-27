@@ -3,18 +3,7 @@ import { useEffect, useState } from "react";
 import CellTable from "./components/CellTable/CellTable";
 import Select from "./components/Select/Select";
 import LogBlock from "./components/LogBlock/LogBlock";
-
-function fetchPresets() {
-  return fetch("https://60816d9073292b0017cdd833.mockapi.io/modes").then(
-    (res) => {
-      if (res.ok) {
-        return res.json();
-      } else {
-        return null;
-      }
-    }
-  );
-}
+import * as endpoints from "./services/endpoints";
 
 function App() {
   const [presets, setPresets] = useState(null);
@@ -22,7 +11,7 @@ function App() {
   const [selectedCells, setSelectedCells] = useState([]);
 
   useEffect(() => {
-    fetchPresets().then((data) => {
+    endpoints.fetchPresets().then((data) => {
       if (data) {
         setPresets(data);
       }
@@ -39,7 +28,7 @@ function App() {
         <div
           style={{ display: "flex", flexDirection: "column", padding: "10px" }}
         >
-          <div style={{ margin: "10px", textAlign: "left" }}>
+          <div style={{ marginBottom: "10px" }}>
             <Select options={presets} onButtonClick={setCurrentPresetID} />
           </div>
           <CellTable
