@@ -6,21 +6,28 @@ import LogBlock from "./components/LogBlock/LogBlock";
 import * as endpoints from "./services/endpoints";
 
 function App() {
-  const [presets, setPresets] = useState(null);
-  const [currentPreset, setCurrentPresetID] = useState("");
-  const [selectedCells, setSelectedCells] = useState([]);
+  const [presets, setPresets] = useState<
+    { name: string; field: number; id: string }[]
+  >([]);
+  const [currentPresetId, setCurrentPresetId] = useState("");
+  const [selectedCells, setSelectedCells] = useState<string[]>([]);
 
   useEffect(() => {
-    endpoints.fetchPresets().then((data) => {
-      if (data) {
-        setPresets(data);
-      }
-    });
+    endpoints
+      .fetchPresets()
+      .then((data) => {
+        if (data) {
+          setPresets(data);
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching presets:", error);
+      });
   }, []);
 
   useEffect(() => {
     setSelectedCells([]);
-  }, [currentPreset]);
+  }, [currentPresetId]);
 
   return (
     <div className="App">
@@ -29,14 +36,14 @@ function App() {
           style={{ display: "flex", flexDirection: "column", padding: "10px" }}
         >
           <div style={{ marginBottom: "10px" }}>
-            <Select options={presets} onButtonClick={setCurrentPresetID} />
+            <Select options={presets} onButtonClick={setCurrentPresetId} />
           </div>
           <CellTable
             size={
               presets
                 ? presets
                     .filter((elm) => {
-                      return elm.id === currentPreset;
+                      return elm.id === currentPresetId;
                     })
                     .map((elm) => {
                       return elm.field;
@@ -44,7 +51,7 @@ function App() {
                 : 1
             }
             selectedCells={selectedCells}
-            onHover={(id) => {
+            onHover={(id: string) => {
               setSelectedCells((arr) => {
                 if (arr.includes(id)) {
                   return arr.filter((elm) => {

@@ -8,11 +8,18 @@ const Table = styled.table`
     border: 1px solid black;
     border-collapse: collapse;
   }
+  td.selected {
+    background-color: #03a8f4;
+  }
   width: 400px;
   height: 400px;
 `;
 
-function CellTable(props) {
+function CellTable(props: {
+  size: number;
+  selectedCells: string[];
+  onHover: (arg: string) => void;
+}) {
   const currentBlock = useRef("");
 
   return (
@@ -25,10 +32,8 @@ function CellTable(props) {
                 const id = `${i}x${j}`;
                 return (
                   <td
-                    style={
-                      props.selectedCells.includes(id)
-                        ? { backgroundColor: "#03a8f4" }
-                        : {}
+                    className={
+                      props.selectedCells.includes(id) ? "selected" : ""
                     }
                     key={uuidv4()}
                     onMouseEnter={() => {

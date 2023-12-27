@@ -14,7 +14,10 @@ const Button = styled.button`
   }
 `;
 
-function Select(props) {
+function Select(props: {
+  options: { name: string; field: number; id: string }[];
+  onButtonClick: (arg: string) => void;
+}) {
   const [selectValue, setSelectValue] = useState("");
   return (
     <>

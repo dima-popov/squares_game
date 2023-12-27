@@ -14,19 +14,23 @@ const Item = styled.div`
   border-radius: 4px;
 `;
 
-function LogBlock(props) {
+const Title = styled.h3`
+  padding: 0;
+  margin: 0;
+  margin-bottom: 10px;
+`;
+
+function LogBlock(props: { logs: string[] }) {
   return (
     <div>
-      <h3 style={{ padding: 0, margin: 0, marginBottom: "10px" }}>
-        Hover squares
-      </h3>
+      <Title>Hover squares</Title>
       <Box>
         {props.logs.map((item) => {
-          const colRow = item.split("x");
+          const colRow = item.split("x").map(Number);
 
           return (
-            <Item>
-              row {Number(colRow[0]) + 1} col {Number(colRow[1]) + 1}
+            <Item key={item}>
+              row {colRow[0] + 1} col {colRow[1] + 1}
             </Item>
           );
         })}
